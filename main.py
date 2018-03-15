@@ -4,19 +4,18 @@ import requests
 import time
 import os
 
-users_url = str(raw_input('Enter URL:'))
+url = raw_input('Enter URL:')
 images = []
 
 #This function will get the address of website and scroll it automatically
 def get_page():
-    global driver
-    driver = webdriver.Chrome('E:\piotrulu\Scripts\chromedriver.exe')
-    driver.get(users_url)
+
+    driver = webdriver.Chrome()
+    driver.get(url)
     last_height = driver.execute_script('return document.body.scrollHeight')
 
     while True:
         driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
-        time.sleep(1)
         new_height = driver.execute_script('return document.body.scrollHeight')
         if new_height == last_height:
             break
@@ -27,6 +26,7 @@ get_page()
 
 def get_img():
 
+    driver = webdriver.Chrome()
     sp = bs(driver.page_source, 'html.parser')
     for image in sp.find_all('img'):
         images.append(image)
