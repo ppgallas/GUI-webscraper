@@ -9,11 +9,10 @@ images = []
 
 #This function will get the address of website and scroll it automatically
 def get_page():
-
+    global driver
     driver = webdriver.Chrome()
     driver.get(url)
     last_height = driver.execute_script('return document.body.scrollHeight')
-
     while True:
         driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
         new_height = driver.execute_script('return document.body.scrollHeight')
@@ -23,21 +22,22 @@ def get_page():
             last_height = new_height
 get_page()
 
-
+#This function uses BeautifulSoup to parse through the page source and find images.
 def get_img():
 
-    driver = webdriver.Chrome()
     sp = bs(driver.page_source, 'html.parser')
     for image in sp.find_all('img'):
         images.append(image)
 get_img()
 
+#Create folder which will contain downloaded images.
 def make_dir():
     if not os.path.exists('Downloaded images'):
         os.mkdir('Downloaded images')
     os.chdir('Downloaded images')
 make_dir()
 
+#Function which saves images.
 def save_img():
 
     x = 0
